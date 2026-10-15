@@ -1,0 +1,17 @@
+{
+  "name": "434-portal",
+  "owner": {
+    "name": "434 Marketing",
+    "url": "https://www.434marketing.com"
+  },
+  "metadata": {
+    "description": "434 Marketing's Cursor plugin marketplace."
+  },
+  "plugins": [
+    {
+      "name": "434-portal",
+      "source": "plugins/434-portal",
+      "description": "434 Portal for 434 Marketing clients and staff: keyword and competitor research, site audits, rankings, AI visibility, and Search Console data."
+    }
+  ]
+}

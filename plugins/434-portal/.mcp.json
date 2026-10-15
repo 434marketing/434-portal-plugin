@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "434-portal": {
+      "type": "http",
+      "url": "https://app.434portal.com/mcp"
+    }
+  }
+}

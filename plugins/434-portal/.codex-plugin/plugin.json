@@ -1,0 +1,49 @@
+{
+  "name": "434-portal",
+  "version": "0.2.0",
+  "description": "For 434 Marketing clients and staff: research keywords and competitors, audit sites, track rankings and AI visibility, use connected Search Console data, and review and build lead forms from your AI assistant.",
+  "author": {
+    "name": "434 Marketing",
+    "url": "https://www.434marketing.com"
+  },
+  "homepage": "https://app.434portal.com",
+  "repository": "https://github.com/434marketing/434-portal-plugin",
+  "license": "MIT",
+  "keywords": [
+    "seo",
+    "keyword-research",
+    "serp",
+    "site-audit",
+    "backlinks",
+    "search-console",
+    "rank-tracking",
+    "local-seo",
+    "ai-visibility",
+    "lead-forms"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "434 Portal",
+    "shortDescription": "Your 434 Marketing SEO workspace.",
+    "longDescription": "Bring your 434 Portal data into Codex.\n\nResearch keywords, analyze competitors and backlinks, run technical site audits, track rankings and AI visibility, and read connected Search Console data for the client organization you connect.\n\nTwelve guided SEO skills and four lead skills (lead review, form builder, contact lists, monthly client report) ship with the plugin. Each connection is tied to one client organization.",
+    "developerName": "434 Marketing",
+    "category": "Productivity",
+    "capabilities": [
+      "Keyword research",
+      "Competitor analysis",
+      "Site audits",
+      "Search Console",
+      "Lead forms"
+    ],
+    "websiteURL": "https://app.434portal.com",
+    "privacyPolicyURL": "https://www.434marketing.com/privacy-policy/",
+    "termsOfServiceURL": "https://www.434marketing.com/terms-and-conditions/",
+    "defaultPrompt": [
+      "Research keywords for my site and shortlist the best opportunities.",
+      "Audit my site and give me a one-page report with a single next action.",
+      "Track my rankings for these keywords and summarize what changed.",
+      "Which sources and competitors appear in my saved AI answers?"
+    ]
+  }
+}
