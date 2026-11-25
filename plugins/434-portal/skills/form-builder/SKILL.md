@@ -40,6 +40,8 @@ Ask in one or two short messages, offering sensible defaults:
 - Field keys are lowercase snake_case and unique, such as `first_name` or `service_needed`.
 - Map fields to the contact (`contactMapping`) so leads become usable contacts: an `email` field → `email`, a `phone` field → `phone`, short text name fields → `first_name` and `last_name`, an `address` field → `address`, a ZIP field → `postal_code`. One field per mapping; everything else is `none`.
 - Require only what the team can't follow up without, usually email or phone plus name.
+- Use `zip` for a US ZIP code; it accepts only 5 digits or ZIP+4.
+- To show a field only for certain answers, set `visibleWhen` with an earlier `select`, `choice` or `checkbox` field's key and the options that show it. Required then applies only while it shows.
 - Use `select` or `choice` for a fixed list of answers, `checkbox` for several, `long` for open questions, `date` for a preferred date. Options are short and unique.
 - An auto-reply needs a field mapped to `email`. Keep it plain: thank them, say when to expect a reply. Merge tags such as `{first_name}` and `{business_name}` are filled in.
 
