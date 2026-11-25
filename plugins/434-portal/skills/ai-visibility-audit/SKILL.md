@@ -19,7 +19,7 @@ The project-context tools are free and shared with the app and other agents.
 
 1. External MCP clients: resolve the project with `list_projects`, ask only if the match is ambiguous, then call `get_project_context`. In SAM, use the current project and context already injected into the conversation; SAM has no `get_project_context` tool and needs no project selection or connection setup.
 2. This skill needs `business_overview`, the website and the main competitors. If the overview is empty, infer it from the site, confirm it in one question, and save it with `update_project_context`.
-3. Read `get_ai_visibility_tracker`. Its prompts, competitors, engines, market and latest runs decide which path below applies. Check the tracker's own brand, the `brands` row with `own: true`. Its name is the project name. If that is not how people write the brand (for example a project named "Acme website"), answers that name the brand are not counted as mentions and brand questions are not treated as branded. Ask the user to rename the project in the app before collecting or interpreting answers.
+3. Read `get_ai_visibility_tracker`. Its prompts, competitors, engines, market and latest runs decide which path below applies. Check the tracker's own brand, the `brands` row with `own: true`. Its name is the project's brand name, or the project name when no brand name is set. If that is not how people write the brand (for example a project named "Acme website"), answers that name the brand are not counted as mentions and brand questions are not treated as branded. Confirm the right name with the user and save it with `update_project_context` (`{brandName: "Acme"}`) before collecting or interpreting answers. Saving it does not change earlier runs.
 4. Reuse research-log findings under 30 days old for discovery. A claim that drives a recommendation still needs evidence from a run or a page read during this audit.
 5. On finish, write back the pages the report names with `addKeyPages` and append `{ updates: [{ appendResearchLog: { summary: "AI visibility audit: <run id>. Verdict: <conclusion>" } }] }`.
 
@@ -89,13 +89,18 @@ For each: the prompts it serves, the evidence (answers, cited pages, engines), t
 
 ## What to return
 
-Deliver through the `seo-report` skill, saving with `skill: "ai-visibility-audit"` and a title like "AI Visibility Audit — Oct 2, 2026". If that skill is unavailable, say so and stop before writing HTML. Sections, in order:
+Deliver through the `seo-report` skill, saving with `skill: "ai-visibility-audit"` and the title "AI visibility audit". If that skill is unavailable, say so and stop before writing HTML. Use its report shape: the verdict, "What to do", the moves, then the data. For this audit:
 
-1. **Where you stand in AI answers**: three bullets. Mention and citation rates with denominators for the strongest and weakest topics (or engines, when only one topic has neutral prompts), the number of branded prompts left out of these rates, the competitor that appears most often when the brand does not, and what is already working.
-2. **Recommendations**: one to three `h3` items in priority order. Each has **Do this** (two to four bullets, starting with a verb and naming the page) and **Why** (the prompts and engines, the cited pages behind the gap, and the main uncertainty), plus a small evidence table: Prompt | Engines naming a competitor, not you | Pages cited instead.
-3. **What AI cites in your market**: one table of the top recurring sources. Source | Type | Answers citing it | Lists you? | Lists competitors.
-4. **What else we checked**: Opportunity | What we found | Decision, one line per shortlist row that did not become a recommendation.
-5. **How this report was made**: the fixed skill link line from `seo-report` (URL `https://github.com/434marketing/434-portal-plugin/tree/main/plugins/434-portal/skills/ai-visibility-audit`, text "434 Portal AI Visibility Audit skill"), the run ID, collection date, market, engines and coverage, then a `<details><summary>Evidence and methodology</summary>` block with the prompts, the answers and pages read, any fan-out queries checked, and the `robots.txt` rules found.
+1. **Verdict**: the sentence a founder would repeat, built from the evidence: how often AI answers name the brand, with the denominator, and who they name instead.
+2. **The moves**: one to three in priority order.
+   - **Facts**: the prompts the move serves out of those checked ("6 of 14 prompts"), the engines, and the source cited instead.
+   - **Do this**: two to four steps, starting with a verb and naming the page or the third-party source.
+   - **Why**: the prompts and engines, the cited pages behind the gap, and the main uncertainty.
+   - A small evidence table: Prompt | Engines naming a competitor, not you | Pages cited instead.
+3. **Where you stand in AI answers**: three bullets. Mention and citation rates with denominators for the strongest and weakest topics (or engines, when only one topic has neutral prompts), the number of branded prompts left out of these rates, the competitor that appears most often when the brand does not, and what is already working.
+4. **What AI cites in your market**: one table of the top recurring sources. Source | Type | Answers citing it | Lists you? | Lists competitors. The sources the moves act on are the `pick` rows.
+5. **What else we checked**: Opportunity | What we found | Decision, one line per shortlist row that did not become a move.
+6. **How this report was made**: the fixed skill link line from `seo-report` (URL `https://github.com/434marketing/434-portal-plugin/tree/main/plugins/434-portal/skills/ai-visibility-audit`, text "434 Portal AI Visibility Audit skill"), the run ID, collection date, market, engines and coverage, then the closed "Evidence and methodology" block with the prompts, the answers and pages read, any fan-out queries checked, and the `robots.txt` rules found.
 
 In chat, lead with one sentence a founder would repeat, built from the evidence, for example: "When people ask AI for the best invoicing app for freelancers, 3 of 4 engines name FreshBooks and cite two review articles that don't list you." Then the leading recommendation and the report link.
 
