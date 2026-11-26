@@ -39,7 +39,8 @@ Deliver through the `seo-report` skill, saving with `skill: "local-seo"`. If tha
 - `get_local_serp_results`: the Maps/Local Finder result set near a coordinate. The rows carry `cid` and `place_id` — collect them once and reuse them everywhere below.
 - `get_business_profile`: the full profile for one business (hours, rating breakdown) when the `search_local_businesses` row isn't enough.
 - `get_business_reviews`: reviews with ratings, text, and whether the owner replied. Queued: a `processing` response returns a `taskId` — call again with it after 30-60 seconds, at no extra cost.
-- `get_local_rank_grid`: rank at every point of a grid around a coordinate, with each point's result count and #1 business. 3x3 is nine searches; only go to 5x5 when the service area is genuinely wide.
+- `list_local_trackers`, `get_local_tracker`, `get_local_scan`: the businesses tracked on the website's Local SEO page, their checks with each keyword's summary, and a saved scan's grid in the same point shape as `get_local_rank_grid`. Free: read these before any new grid.
+- `get_local_rank_grid`: new paid searches; rank at every point of a grid around a coordinate, with each point's result count and #1 business. 3x3 is nine searches; only go to 5x5 when the service area is genuinely wide.
 - `get_google_business_questions`: Q&A on the profile (accepts `cid`/`placeId`).
 - `get_business_updates`: posts published on the profile, with dates.
 - `list_business_categories`: valid category slugs for `search_local_businesses`.
@@ -51,7 +52,7 @@ Deliver through the `seo-report` skill, saving with `skill: "local-seo"`. If tha
 3. Compare the user's listing against the top two competitors: primary category, additional categories, review count, hours completeness, photo count, claimed status. `search_local_businesses` rows usually carry all of this; use `get_business_profile` for what they lack.
 4. Sanity-check each listing's website link (`url`/`contact_url` in the rows): it should deep-link to that location's page on the project domain, not a homepage or a stale domain. For broader on-page work, hand off to `run_site_audit`.
 5. Call `get_business_reviews` for the user and the strongest competitor. Look at review volume, recency, average rating, and how many reviews got an owner reply.
-6. Run `get_local_rank_grid` for the main keyword, and for each further keyword the user gave (same grid, same center; state the cost first). Use the grid to separate "ranks at the storefront only" from "ranks across the service area", and each point's `topResult` to name who wins where the target doesn't.
+6. Check saved tracking first: `list_local_trackers`, and if the business is tracked, `get_local_tracker` and `get_local_scan` for the latest completed check of each keyword. Comparing it with the previous check shows the trend. Run `get_local_rank_grid` only for a keyword or area the saved checks don't cover, or when the user asks for a fresh check (same grid, same center; state the cost first). Use the grid to separate "ranks at the storefront only" from "ranks across the service area", and each point's `topResult` to name who wins where the target doesn't.
 7. Add `get_google_business_questions` and `get_business_updates` when the profile basics are already competitive and the gap is engagement rather than setup.
 8. Turn the evidence into a prioritized list. Category and claim problems outrank posting cadence every time.
 
@@ -132,7 +133,7 @@ The `figcaption` lists every value in reading order: "Average position across 2 
 </figure>
 ```
 
-`spacingKm` is the km spacing you passed to `get_local_rank_grid` (2 when you left it out). Set `distanceUnit` to the tool's `distanceUnit` (`"mi"` or `"km"`) so the map's spacing label matches the drawing. Every point the tool returned goes in `points`: its `row` and `col`, `latitude` as `lat`, `longitude` as `lng`, `rank` (`null` when the business was not found there) and `topResult.title` as `top`. Leave out a point whose search failed (`error: true`); the viewer shows that keyword as "search failed" there. One entry in `keywords` per grid you ran, all with the same center and spacing. The block is data: no comments, no trailing commas, nothing computed.
+`spacingKm` is the km spacing you passed to `get_local_rank_grid` (2 when you left it out), or `get_local_scan`'s `spacingKm` for a saved scan. Set `distanceUnit` to the tool's `distanceUnit` (`"mi"` or `"km"`) so the map's spacing label matches the drawing. Every point the tool returned goes in `points`: its `row` and `col`, `latitude` as `lat`, `longitude` as `lng`, `rank` (`null` when the business was not found there) and `topResult.title` as `top`. Leave out a point whose search failed (`error: true`); the viewer shows that keyword as "search failed" there. One entry in `keywords` per grid you ran, all with the same center and spacing. The block is data: no comments, no trailing commas, nothing computed.
 
 ## Guardrails
 

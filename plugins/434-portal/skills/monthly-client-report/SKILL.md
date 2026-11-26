@@ -25,9 +25,9 @@ Call `get_project_context` first: the business, its services and locations, comp
 Use what is connected; skip what isn't and say so in one line.
 
 - Search: `get_search_console_performance` (clicks, impressions, top queries and pages), `get_google_analytics_organic_overview` and `get_google_analytics_key_events` when Analytics is connected.
-- Rankings: `get_rank_tracker` for tracked keywords and movement; `get_local_rank_grid` for map rankings when the project tracks them.
+- Rankings: `get_rank_tracker` for tracked keywords and movement. For map rankings, `list_local_trackers`, then `get_local_tracker` for each tracked business: compare the last check in the month with the one before it (points ranked, top 3 share, average rank per keyword), and read a scan's grid with `get_local_scan` when the change needs explaining. Never run `get_local_rank_grid` for this report.
 - Site health: `list_site_audits` and `get_audit_issues` for the latest audit; don't start a new audit unless asked.
-- Leads: `get_submission_counts` for the month and the prior month, per form; `list_form_submissions` for sources (UTM source, else referrer host, else direct); `get_attribution_report` only if the tool is listed (otherwise use the submission sources and don't mention it).
+- Leads: `get_submission_counts` for the month and the prior month, per form; `list_form_submissions` for sources (UTM source, else referrer host, else direct); `get_attribution_report` only if the tool is listed (otherwise use the submission sources and don't mention it). `list_unassigned_leads` and `list_ai_reply_approvals` show leads still waiting on the team (unassigned, or an AI reply awaiting approval); if any are, give the counts under Leads (rows returned plus `more`).
 - Saving: `list_reports` and `save_report`, when available.
 
 These reads make no paid provider calls, except rank or grid checks if you start new ones; don't.
@@ -45,7 +45,7 @@ These reads make no paid provider calls, except rank or grid checks if you start
 - **The month in one line**: leads and organic clicks, each with the change.
 - **Leads**: total, per form, top three sources with counts.
 - **Search**: clicks, impressions, average position; the top pages and queries that gained or lost.
-- **Rankings**: notable movers among tracked keywords.
+- **Rankings**: notable movers among tracked keywords, and map coverage per tracked business against the previous check.
 - **Site health**: the latest audit's headline and any new critical issue.
 - **What we're doing next**: up to three priorities with the expected effect.
 - **How this report was made**: which tools reported what, and anything not connected.
