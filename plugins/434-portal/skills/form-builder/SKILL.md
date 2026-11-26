@@ -18,9 +18,9 @@ Leave the user with a published form that captures what the business needs, fill
 
 ## Tools
 
-- `list_forms`, `get_form`: check for an existing form before creating a new one.
+- `list_forms`, `get_form`: check for an existing form before creating a new one. `get_form` returns the live definition, the saved draft (`draft.fields`, which can differ from the live form), and the auto-reply and AI reply settings.
 - `create_form`: a draft with starter fields (first name, last name, email, phone, message). Returns the form id and the shortcode.
-- `save_form_draft`: replaces the draft's fields and changes any settings, notification recipients and template auto-reply. Returns `publishProblems`.
+- `save_form_draft`: replaces the draft's fields and changes any settings, notification recipients, auto-reply and AI reply settings. Start from `get_form`'s `draft.fields` so unpublished edits survive. Auto-reply and AI reply changes apply at once, not on publish. Returns `publishProblems`.
 - `publish_form`: publishes the saved draft. Returns `problems` instead when something is missing.
 - `set_form_status`: pause, resume or archive a published form.
 - `list_contact_lists`: when the user wants new contacts added to a list.
